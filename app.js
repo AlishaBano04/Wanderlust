@@ -93,9 +93,18 @@ app.all("*", (req, res, next) => {
 });
 
 //Middleware
+
+// app.use((err, req, res, next) => {
+//   let { statusCode = 500, message = "Something went wrong!" } = err;
+//   res.render("error.ejs", { message });
+// });
+
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong!" } = err;
-  res.render("error.ejs", { message });
+  res.status(statusCode).render("error.ejs", {
+    message,
+    currUser: req.user,
+  });
 });
 
 app.listen(8080, () => {
