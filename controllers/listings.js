@@ -1,8 +1,22 @@
 const Listing = require("../models/listing");
 
 module.exports.index = async (req, res, next) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
+  const { search } = req.query;
+
+  let allListings;
+
+  if (search) {
+    allListings = await Listing.find({
+      $or: [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+      ],
+    });
+  } else {
+    allListings = await Listing.find({});
+  }
+
+  res.render("listings/index.ejs", { allListings, search });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -21,10 +35,12 @@ module.exports.showListings = async (req, res) => {
       },
     })
     .populate("owner");
+
   if (!listing) {
     req.flash("error", "Listing you requested for does not exist");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
+
   res.render("listings/show.ejs", { listing });
 };
 
@@ -36,6 +52,7 @@ module.exports.createListing = async (req, res, next) => {
   newListing.owner = req.user._id;
   newListing.image = { url, filename };
   await newListing.save();
+
   req.flash("success", "New Listing Created");
   res.redirect("/listings");
 };
@@ -43,10 +60,12 @@ module.exports.createListing = async (req, res, next) => {
 module.exports.renderEditForm = async (req, res, next) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
+
   if (!listing) {
     req.flash("error", "Listing you requested for does not exist");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
+
   res.render("listings/edit.ejs", { listing });
 };
 
