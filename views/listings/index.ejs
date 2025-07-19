@@ -14,7 +14,6 @@
   }
   .filter:hover {
     opacity: 1;
-    cursor: pointer;
   }
   .filter p {
     font-size: 0.8rem;
@@ -81,7 +80,6 @@
     <div><i class="fa-solid fa-ship"></i></div>
     <p>Boating</p>
   </div>
-
   <div class="tax-toggle">
     <div class="form-check-reverse form-switch">
       <input
@@ -96,19 +94,32 @@
   </div>
 </div>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-  <% for(let listing of allListings) { %>
+<div class="container mt-3">
+  <% if (allListings.length === 0 && search) { %>
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    No listings found for "<%= search %>". Please try a different search.
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"></button>
+  </div>
+  <% } %>
+</div>
+
+<div class="row row-cols-lg-5 row-cols-md-3 row-cols-sm-1 mt-3">
+  <% for (let listing of allListings) { %>
   <a href="/listings/<%= listing._id %>" class="listing-link">
     <div class="card col listing-card">
       <img
         src="<%= listing.image.url %>"
         class="card-img-top"
         alt="Listing-Image"
-        style="height: 20rem" />
+        style="height: 12rem" />
       <div class="card-img-overlay"></div>
       <div class="card-body">
         <p class="card-text">
-          <b><%= listing.title %></b> <br />
+          <b><%= listing.title %></b><br />
 
           <!-- Normal price -->
           <span class="price">
@@ -121,7 +132,7 @@
             %> /Day
           </span>
 
-          <i class="tax-info">&nbsp;&nbsp; +18% GST</i>
+          <i class="tax-info">with 18% GST</i>
         </p>
       </div>
     </div>

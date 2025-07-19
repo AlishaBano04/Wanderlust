@@ -4,6 +4,8 @@
     <div class="col-8 offset-3">
       <h3><%= listing.title %></h3>
     </div>
+
+    <!-- Listing Card -->
     <div class="card col-6 offset-3 show-card listing-card">
       <img
         src="<%= listing.image.url%>"
@@ -11,7 +13,6 @@
         alt="Listing-Image" />
       <div class="card-body">
         <p class="card-text">Owned By: <i><%= listing.owner.username %></i></p>
-
         <p><%= listing.description %></p>
         <p>&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
         <p><%= listing.location %></p>
@@ -20,22 +21,81 @@
     </div>
 
     <br />
-  </div>
-  <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
-  <div class="btns">
-    <a
-      href="/listings/<%= listing._id %>/edit"
-      class="btn btn-dark col-1 offset-3 edit-btn"
-      >Edit</a
-    >
-    <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
-      <button class="btn btn-dark offset-5">Delete</button>
-    </form>
-    <%}%>
+    <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
+    <div class="btns">
+      <a
+        href="/listings/<%= listing._id %>/edit"
+        class="btn btn-dark col-1 offset-3"
+        >Edit</a
+      >
+      <form action="/listings/<%=listing._id%>?_method=DELETE" method="POST">
+        <button class="btn btn-dark edit-btn offset-5">Delete</button>
+      </form>
+    </div>
+
+    <% } %>
+
+    <!-- Booking Form (Only for logged in users) -->
+    <% if (currUser) { %>
+    <div class="col-6 offset-3 mt-4 mb-4">
+      <hr />
+      <h4>Book Now</h4>
+      <form
+        action="/listings/<%= listing._id %>/book"
+        method="POST"
+        novalidate
+        class="needs-validation"
+        class="border p-3 rounded bg-light">
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input
+            type="date"
+            name="startDate"
+            id="startDate"
+            class="form-control"
+            required />
+          <div class="invalid-feedback">Please write a description</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="endDate" class="form-label">End Date</label>
+          <input
+            type="date"
+            name="endDate"
+            id="endDate"
+            class="form-control"
+            required />
+          <div class="invalid-feedback">Please write a description</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="guests" class="form-label">Number of people</label>
+          <input
+            type="number"
+            name="guests"
+            id="guests"
+            class="form-control"
+            min="1"
+            required />
+          <div class="invalid-feedback">Please write a description</div>
+        </div>
+
+        <button type="submit" class="btn btn-dark">Book Now</button>
+      </form>
+    </div>
+    <% } else { %>
+    <hr />
+    <div class="col-6 offset-3 mt-4 mb-4 fs-6">
+      <p style="font-weight: bold; font-size: 16px">
+        <a href="/login" class="book">Login</a> to book this place.
+      </p>
+    </div>
+    <% } %>
   </div>
 
   <div class="col-8 offset-3 mb-3">
     <% if(currUser) { %>
+    <hr />
     <h4>Leave a Review</h4>
     <form
       action="/listings/<%= listing._id%>/reviews"
@@ -44,7 +104,6 @@
       class="needs-validation">
       <div class="mb-3 mt-3">
         <label for="rating" class="form-label">Rating</label>
-
         <fieldset class="starability-slot">
           <input
             type="radio"
@@ -102,6 +161,7 @@
       <button class="btn btn-outline-dark">Submit</button>
     </form>
     <% } %>
+
     <hr />
     <p><b>All Reviews</b></p>
     <div class="row">
@@ -109,7 +169,7 @@
       <div class="card review-card col-5 ms-3 mb-3">
         <h5 class="card-title">
           <% if(review.author) { %><%= review.author.username %> <% } else {%>
-          Anonymous <%}%>
+          Anonymous <% } %>
         </h5>
         <p
           class="starability-result card-text"
@@ -125,7 +185,7 @@
         </form>
         <% } %>
       </div>
-      <%}%>
+      <% } %>
     </div>
   </div>
 </body>

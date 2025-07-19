@@ -25,20 +25,19 @@
             type="text"
             name="listing[description]"
             class="form-control"
+            placeholder="Please write a description"
             required></textarea>
           <div class="invalid-feedback">Please write a description</div>
         </div>
-        <!-- <div class="mb-3">
-          <label for="image.url" class="form-label">Image Link</label>
-          <input
-            type="text"
-            name="listing[image][url]"
-            placeholder="Enter Image URL/LINK"
-            class="form-control" />
-        </div> -->
+
         <div class="mb-3">
           <label for="image.url" class="form-label">Upload Image</label>
-          <input type="file" name="listing[image][url]" class="form-control" />
+          <input
+            type="file"
+            name="listing[image][url]"
+            class="form-control"
+            required />
+          <div class="invalid-feedback">Please choose an image</div>
         </div>
 
         <div class="mb-3">

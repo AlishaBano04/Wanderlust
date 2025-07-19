@@ -1,0 +1,43 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-5 col-6 offset-3">
+  <h2>Your Bookings</h2>
+
+  <% if (bookings.length === 0) { %>
+  <p>You haven’t made any bookings yet.</p>
+  <% } else { %> <% bookings.forEach(function(booking) { %> <% const basePrice =
+  (booking.totalPrice / 1.18).toFixed(2); const gst = (booking.totalPrice -
+  basePrice).toFixed(2); %>
+  <div class="card mb-3 p-3">
+    <h4><%= booking.listing.title %></h4>
+    <hr />
+    <br />
+    <p><strong>Booked By:</strong> <%= booking.user.username %></p>
+
+    <p><strong>Location:</strong> <%= booking.listing.location %></p>
+    <p>
+      <strong>From:</strong> <%= new Date(booking.startDate).toDateString() %>
+    </p>
+    <p><strong>To:</strong> <%= new Date(booking.endDate).toDateString() %></p>
+    <p><strong>Number of people:</strong> <%= booking.guests %></p>
+
+    <p>
+      <strong>Base Price:</strong> ₹<%=
+      Number(basePrice).toLocaleString("en-IN") %>
+    </p>
+    <p>
+      <strong>GST (18%):</strong> ₹<%= Number(gst).toLocaleString("en-IN") %>
+    </p>
+    <p>
+      <strong>Total Price:</strong> ₹<%=
+      booking.totalPrice.toLocaleString("en-IN") %>
+    </p>
+
+    <a
+      href="/listings/<%= booking.listing._id %>"
+      class="btn btn-dark col-4 offset-5 mt-2">
+      View Listing
+    </a>
+  </div>
+  <% }) %> <% } %>
+</div>

@@ -1,3 +1,5 @@
+// booking cancel
+
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
@@ -6,6 +8,8 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Listing = require("./models/listing.js");
+const Booking = require("./models/booking.js");
+
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -20,6 +24,8 @@ const User = require("./models/user.js");
 const listingRouter = require("./Routes/listing.js");
 const reviewRouter = require("./Routes/review.js");
 const userRouter = require("./Routes/user.js");
+
+const bookingRouter = require("./Routes/booking.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 
@@ -87,6 +93,7 @@ app.use((req, res, next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/", bookingRouter);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));

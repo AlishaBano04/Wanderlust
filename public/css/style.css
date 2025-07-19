@@ -75,6 +75,9 @@ body {
 .card-body {
   padding: 0 !important;
 }
+.card-text {
+  font-size: 13.5px;
+}
 .card-text p {
   font-weight: 400;
 }
@@ -111,4 +114,12 @@ body {
 .show-card {
   padding-left: 0;
   padding-right: 0;
+}
+.book-listing {
+  font-weight: bold;
+  font-size: larger;
+}
+.book {
+  text-decoration: none;
+  color: #fe424d;
 }
